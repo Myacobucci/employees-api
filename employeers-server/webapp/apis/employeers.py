@@ -1,5 +1,8 @@
+import requests
 from flask_restx import Namespace, Resource, fields
-
+from webargs.flaskparser import use_kwargs
+from .utils import PAGINATION_ARGUMENTS
+from ...settings import EMPLOYEERS_URL, EMPLOYEERS_URL_TIMEOUT
 
 api = Namespace('employeers', description='Employeers')
 
@@ -8,12 +11,17 @@ employeer = api.model('Employeer', {
 })
 
 
-@api.route('/')
+@api.route('')
 class Employeers(Resource):
     @api.doc('list_employeers')
     @api.marshal_list_with(employeer)
-    def get(self):
-        raise NotImplementedError
+    @use_kwargs(PAGINATION_ARGUMENTS, location="query")
+    def get(self, limit, offset):
+        params = {"limit": limit, "offset": offset}
+        response = requests.get(
+            EMPLOYEERS_URL, params=params, timeout=EMPLOYEERS_URL_TIMEOUT)
+        response.raise_for_status()
+        return response.json()
 
 
 @api.route('/<id>')
