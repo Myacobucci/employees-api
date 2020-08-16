@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from webargs.flaskparser import use_kwargs
-from .utils import PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS, validate_id
+from ..utils import PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS, validate_id
 from ..lib.company_resources import get_employees_from_company_resources, get_employee_from_response
 
 api = Namespace('employeers', description='Employeers')
