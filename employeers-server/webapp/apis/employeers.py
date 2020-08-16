@@ -1,7 +1,7 @@
 import requests
 from flask_restx import Namespace, Resource, fields
 from webargs.flaskparser import use_kwargs
-from .utils import PAGINATION_ARGUMENTS
+from .utils import PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS
 from ...settings import EMPLOYEERS_URL, EMPLOYEERS_URL_TIMEOUT
 
 api = Namespace('employeers', description='Employeers')
@@ -16,6 +16,7 @@ class Employeers(Resource):
     @api.doc('list_employeers')
     @api.marshal_list_with(employeer)
     @use_kwargs(PAGINATION_ARGUMENTS, location="query")
+    @api.doc(params=DOC_PAGINATION_ARGUMENTS)
     def get(self, limit, offset):
         params = {"limit": limit, "offset": offset}
         response = requests.get(
