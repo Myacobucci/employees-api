@@ -1,3 +1,6 @@
+import os
+import json
+from functools import lru_cache
 from webargs import validate, fields as webargs_fields
 from ..errors_handler import ParametersError
 
@@ -16,3 +19,12 @@ def validate_id(identifier):
     if not identifier.isdigit():
         raise ParametersError(
             "Id should be an integer greater or equal than 0")
+
+
+@lru_cache(maxsize=1)
+def get_json_from_file_resource(filename):
+    file_path = f"../../resources/{filename}.json"
+    filename = os.path.join(os.path.dirname(__file__), file_path)
+    with open(filename, 'r') as json_data:
+        json_data = json.load(json_data)
+        return json_data

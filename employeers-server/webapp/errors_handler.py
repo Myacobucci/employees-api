@@ -21,6 +21,10 @@ def configure_error_handling(api):
     def handle_parameters_error(exception):
         return handle_error(exception, 400)
 
+    @api.errorhandler(FileNotFoundError)
+    def handle_external_url_error(exception):
+        return handle_error(exception, 500)
+
     @api.errorhandler(ExternalUrlError)
     def handle_external_url_error(exception):
         return handle_error(exception, 502)
