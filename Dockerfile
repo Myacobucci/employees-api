@@ -3,4 +3,4 @@ COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
 ENTRYPOINT ["python"]
-CMD ["employeers-server/webapp/app.py"]
+CMD ["-m", "employeers-server.webapp.app"]
