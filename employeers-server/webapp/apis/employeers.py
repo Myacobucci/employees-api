@@ -3,7 +3,7 @@ from webargs.flaskparser import use_kwargs
 from ..utils import (validate_id, PAGINATION_ARGUMENTS,
                      DOC_PAGINATION_ARGUMENTS)
 from ..relationships import (validate_expand_parameter,
-                             apply_expand_relationships, EXPAND_ARGUMENT)
+                             apply_expand_relationships, EXPAND_ARGUMENT, DOC_EXPAND_ARGUMENT)
 from ..lib.company_resources import get_employees_from_company_resources, get_employee_from_response
 
 api = Namespace('employeers', description='Employeers')
@@ -21,7 +21,7 @@ employee_model = api.model('Employeer', {
 
 @api.route('')
 class Employeers(Resource):
-    @api.doc('list_employeers', params=DOC_PAGINATION_ARGUMENTS)
+    @api.doc('list_employeers', params={**DOC_PAGINATION_ARGUMENTS, **DOC_EXPAND_ARGUMENT})
     @api.marshal_list_with(employee_model)
     @use_kwargs({**PAGINATION_ARGUMENTS, **EXPAND_ARGUMENT}, location="query")
     def get(self, limit, offset, expand):
@@ -38,7 +38,7 @@ class Employeers(Resource):
 @api.param('identifier', 'The employeer identifier')
 @api.response(404, 'Employeer not found')
 class Employeer(Resource):
-    @api.doc('get_employeer')
+    @api.doc('get_employeer', params=DOC_EXPAND_ARGUMENT)
     @api.marshal_with(employee_model)
     @use_kwargs(EXPAND_ARGUMENT, location="query")
     def get(self, identifier, expand):

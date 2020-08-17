@@ -5,7 +5,7 @@ from werkzeug.exceptions import NotFound
 from ..utils import (get_json_from_file_resource, get_dict_of_elements_from_json_file_list,
                      validate_id, PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS, DEPARTMENTS_FILENAME)
 from ..relationships import (validate_expand_parameter,
-                             apply_expand_relationships, EXPAND_ARGUMENT)
+                             apply_expand_relationships, EXPAND_ARGUMENT, DOC_EXPAND_ARGUMENT)
 
 api = Namespace('departments', description='Departments')
 
@@ -20,7 +20,7 @@ department_model = api.model('Departments', {
 
 @api.route('')
 class Departments(Resource):
-    @api.doc('list_departments', params=DOC_PAGINATION_ARGUMENTS)
+    @api.doc('list_departments', params={**DOC_PAGINATION_ARGUMENTS, **DOC_EXPAND_ARGUMENT})
     @api.marshal_list_with(department_model)
     @use_kwargs({**PAGINATION_ARGUMENTS, **EXPAND_ARGUMENT}, location="query")
     def get(self, limit, offset, expand):
@@ -37,7 +37,7 @@ class Departments(Resource):
 @api.param('identifier', 'The department identifier')
 @api.response(404, 'Department not found')
 class Department(Resource):
-    @api.doc('get_department')
+    @api.doc('get_department', params=DOC_EXPAND_ARGUMENT)
     @api.marshal_with(department_model)
     @use_kwargs(EXPAND_ARGUMENT, location="query")
     def get(self, identifier, expand):
