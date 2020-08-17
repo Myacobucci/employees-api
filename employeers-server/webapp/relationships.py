@@ -97,6 +97,8 @@ def get_resources_from_dict(ids_to_expand, resources_dict, resource_type):
 
 
 def apply_expand_relationships(expand, resources_list, employees_resources):
+    if not expand:
+        return
     for resource in resources_list:
         expand_resource(resource, expand, employees_resources)
 
