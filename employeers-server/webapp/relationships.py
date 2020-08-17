@@ -62,8 +62,7 @@ def populate_resources_dict(expand, resources_to_expand, resources_dict):
         return
     ids_to_expand = get_ids_of_resources_to_expand(
         resources_to_expand, first_expand_field)
-    if expand_resource_type == EMPLOYEE_RESOURCE_KEY:
-        add_resources_to_dict(ids_to_expand, resources_dict)
+    add_resources_to_dict(ids_to_expand, resources_dict)
 
     if len(expand_splitted) > 1:
         resources_to_expand = get_resources_from_dict(
