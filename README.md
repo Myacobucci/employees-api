@@ -11,8 +11,8 @@ from an external endpoint, and the departments and offices are read from json fi
 The external api for the employees data must accept limit and offset parameters and
 also be able to get consecutive ids. So the next 2 examples are valid:
 
-- http:/www.myexternalapi.com/employees?limit=10&offset=0
-- http:/www.myexternalapi.com/employees?id=2&id=3
+- http://www.myexternalapi.com/employees?limit=10&offset=0
+- http://www.myexternalapi.com/employees?id=2&id=3
 
 The json files for departments and offices must be a list of objects with the respective information.
 
