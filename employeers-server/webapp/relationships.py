@@ -49,8 +49,6 @@ def validate_expand_relationship(parent_resource_type, resource):
 
 
 def get_resources_for_expand(expand, resources_to_expand):
-    if not expand:
-        return {}
     expand_resources_dict = {}
     populate_resources_dict(expand, resources_to_expand, expand_resources_dict)
     return expand_resources_dict
@@ -96,11 +94,13 @@ def get_resources_from_dict(ids_to_expand, resources_dict, resource_type):
         return [resources_dict[id] for id in ids_to_expand]
 
 
-def apply_expand_relationships(expand, resources_list, employees_resources):
+def apply_expand_relationships(expand, resources_list):
     if not expand:
         return
+    employees_resources_for_expand = get_resources_for_expand(
+        expand, resources_list)
     for resource in resources_list:
-        expand_resource(resource, expand, employees_resources)
+        expand_resource(resource, expand, employees_resources_for_expand)
 
 
 def expand_resource(resource, expand, employees_resources):

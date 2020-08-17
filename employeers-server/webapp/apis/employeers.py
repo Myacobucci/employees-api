@@ -29,11 +29,8 @@ class Employeers(Resource):
 
         params = {"limit": limit, "offset": offset}
         employees = get_employees_from_company_resources(params)
+        apply_expand_relationships(expand, employees)
 
-        employees_resources_for_expand = get_resources_for_expand(
-            expand, employees)
-        apply_expand_relationships(
-            expand, employees, employees_resources_for_expand)
         return employees
 
 
@@ -50,10 +47,7 @@ class Employeer(Resource):
 
         params = {"id": identifier}
         response = get_employees_from_company_resources(params)
-        employees_resources_for_expand = get_resources_for_expand(
-            expand, response)
-        apply_expand_relationships(
-            expand, response, employees_resources_for_expand)
+        apply_expand_relationships(expand, response)
         employee = get_employee_from_response(response, identifier)
 
         return employee
