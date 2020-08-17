@@ -13,7 +13,8 @@ DOC_PAGINATION_ARGUMENTS = {
     "limit": {"description": "Number of results. Max value: 1000.", "default": 100, "type": "integer"},
     "offset": {"description": "Offset", "default": 0, "type": "integer"},
 }
-
+DEPARTMENTS_FILENAME = "departments"
+OFFICES_FILENAME = "offices"
 
 def validate_id(identifier):
     if not identifier.isdigit():

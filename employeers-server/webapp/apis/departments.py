@@ -2,18 +2,17 @@ from flask_restx import Namespace, Resource, fields
 from webargs.flaskparser import use_kwargs
 from werkzeug.exceptions import NotFound
 from ..utils import (get_json_from_file_resource, get_dict_of_elements_from_json_file_list,
-                     validate_id, PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS)
+                     validate_id, PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS, DEPARTMENTS_FILENAME)
 
 api = Namespace('departments', description='Departments')
 
+DEPARTMENT_RESOURCE_KEY = "department"
+DEPARTMENT_ID_FIELD_KEY = "id"
 department_model = api.model('Departments', {
-    'id': fields.Integer(required=True, description='The department identifier'),
+    DEPARTMENT_ID_FIELD_KEY: fields.Integer(required=True, description='The department identifier'),
     'name': fields.String(description='The department name'),
-    'superdepartment': fields.Integer(description='The department superdepartment identifier'),
+    "superdepartment": fields.Integer(description='The department superdepartment identifier'),
 })
-
-DEPARTMENTS_FILENAME = "departments"
-DEPARTMENT_ID_KEY = "id"
 
 
 @api.route('')
@@ -36,7 +35,7 @@ class Department(Resource):
         validate_id(identifier)
 
         departments = get_dict_of_elements_from_json_file_list(
-            DEPARTMENTS_FILENAME, DEPARTMENT_ID_KEY)
+            DEPARTMENTS_FILENAME, DEPARTMENT_ID_FIELD_KEY)
         department = departments.get(int(identifier))
         if not department:
             raise NotFound("Department not found")

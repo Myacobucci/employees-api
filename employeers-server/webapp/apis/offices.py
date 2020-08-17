@@ -2,19 +2,18 @@ from flask_restx import Namespace, Resource, fields
 from webargs.flaskparser import use_kwargs
 from werkzeug.exceptions import NotFound
 from ..utils import (get_json_from_file_resource, get_dict_of_elements_from_json_file_list,
-                     validate_id, PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS)
+                     validate_id, PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS, OFFICES_FILENAME)
 
 api = Namespace('offices', description='Offices')
 
+OFFICE_RESOURCE_KEY = "office"
+OFFICE_ID_FIELD_KEY = "id"
 office_model = api.model('Office', {
-    'id': fields.Integer(required=True, description='The office identifier'),
+    OFFICE_ID_FIELD_KEY: fields.Integer(required=True, description='The office identifier'),
     'city': fields.String(description='The office city'),
     'country': fields.String(description='The office country'),
     'address': fields.String(description='The office address'),
 })
-
-OFFICES_FILENAME = "offices"
-OFFICE_ID_KEY = "id"
 
 
 @api.route('')
@@ -37,7 +36,7 @@ class Office(Resource):
         validate_id(identifier)
 
         offices = get_dict_of_elements_from_json_file_list(
-            OFFICES_FILENAME, OFFICE_ID_KEY)
+            OFFICES_FILENAME, OFFICE_ID_FIELD_KEY)
         office = offices.get(int(identifier))
         if not office:
             raise NotFound("Office not found")
