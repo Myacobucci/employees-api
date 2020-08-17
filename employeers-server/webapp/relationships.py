@@ -15,6 +15,10 @@ SUPERDEPARTMENT_FIELD_KEY = "superdepartment"
 EXPAND_ARGUMENT = {
     "expand": webargs_fields.String(missing="", validate=validate.Length(min=1)),
 }
+DOC_EXPAND_ARGUMENT = {
+    "expand": {"description": "Expand relationships mentioning the field separated with a dot.", "type": "string"},
+}
+
 EXPAND_DELIMITER = "."
 EXPAND_RELATIONSHIPS = {
     EMPLOYEE_RESOURCE_KEY: [MANAGER_FIELD_KEY, OFFICE_FIELD_KEY, DEPARTMENT_FIELD_KEY],
