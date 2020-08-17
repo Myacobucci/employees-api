@@ -1,8 +1,11 @@
+from copy import deepcopy
 from flask_restx import Namespace, Resource, fields
 from webargs.flaskparser import use_kwargs
 from werkzeug.exceptions import NotFound
 from ..utils import (get_json_from_file_resource, get_dict_of_elements_from_json_file_list,
                      validate_id, PAGINATION_ARGUMENTS, DOC_PAGINATION_ARGUMENTS, DEPARTMENTS_FILENAME)
+from ..relationships import (validate_expand_parameter,
+                             apply_expand_relationships, EXPAND_ARGUMENT)
 
 api = Namespace('departments', description='Departments')
 
@@ -11,7 +14,7 @@ DEPARTMENT_ID_FIELD_KEY = "id"
 department_model = api.model('Departments', {
     DEPARTMENT_ID_FIELD_KEY: fields.Integer(required=True, description='The department identifier'),
     'name': fields.String(description='The department name'),
-    "superdepartment": fields.Integer(description='The department superdepartment identifier'),
+    "superdepartment": fields.Raw(description='The department superdepartment identifier'),
 })
 
 
@@ -19,9 +22,14 @@ department_model = api.model('Departments', {
 class Departments(Resource):
     @api.doc('list_departments', params=DOC_PAGINATION_ARGUMENTS)
     @api.marshal_list_with(department_model)
-    @use_kwargs(PAGINATION_ARGUMENTS, location="query")
-    def get(self, limit, offset):
-        departments = get_json_from_file_resource(DEPARTMENTS_FILENAME)
+    @use_kwargs({**PAGINATION_ARGUMENTS, **EXPAND_ARGUMENT}, location="query")
+    def get(self, limit, offset, expand):
+        validate_expand_parameter(expand, DEPARTMENT_RESOURCE_KEY)
+
+        departments = deepcopy(
+            get_json_from_file_resource(DEPARTMENTS_FILENAME))
+        apply_expand_relationships(expand, departments)
+
         return departments[offset: offset + limit]
 
 

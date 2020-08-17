@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from webargs.flaskparser import use_kwargs
 from ..utils import (validate_id, PAGINATION_ARGUMENTS,
                      DOC_PAGINATION_ARGUMENTS)
-from ..relationships import (validate_expand_parameter, get_resources_for_expand,
+from ..relationships import (validate_expand_parameter,
                              apply_expand_relationships, EXPAND_ARGUMENT)
 from ..lib.company_resources import get_employees_from_company_resources, get_employee_from_response
 
