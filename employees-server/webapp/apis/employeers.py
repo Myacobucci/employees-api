@@ -6,10 +6,10 @@ from ..relationships import (validate_expand_parameter,
                              apply_expand_relationships, EXPAND_ARGUMENT, DOC_EXPAND_ARGUMENT)
 from ..lib.company_resources import get_employees_from_company_resources, get_employee_from_response
 
-api = Namespace('employeers', description='Employeers')
+api = Namespace('employees', description='Employees')
 
 EMPLOYEE_RESOURCE_KEY = "employee"
-employee_model = api.model('Employeer', {
+employee_model = api.model('Employee', {
     'id': fields.Integer(required=True, description='The employee identifier'),
     'first': fields.String(description='The employee first name'),
     'last': fields.String(description='The employee last name'),
@@ -20,8 +20,8 @@ employee_model = api.model('Employeer', {
 
 
 @api.route('')
-class Employeers(Resource):
-    @api.doc('list_employeers', params={**DOC_PAGINATION_ARGUMENTS, **DOC_EXPAND_ARGUMENT})
+class Employees(Resource):
+    @api.doc('list_employees', params={**DOC_PAGINATION_ARGUMENTS, **DOC_EXPAND_ARGUMENT})
     @api.marshal_list_with(employee_model)
     @use_kwargs({**PAGINATION_ARGUMENTS, **EXPAND_ARGUMENT}, location="query")
     def get(self, limit, offset, expand):
