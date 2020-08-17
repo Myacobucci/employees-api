@@ -31,3 +31,5 @@ This project is implemented using Python, Flask, Flask RestX, Webargs and Docker
 So now the server is running on http://0.0.0.0:5000/
 
 In this URL you can find the Swagger documentation of all the endpoints supported by this app.
+
+To run the unit tests execute `./run_tests.sh`
