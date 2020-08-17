@@ -39,12 +39,16 @@ class Departments(Resource):
 class Department(Resource):
     @api.doc('get_department')
     @api.marshal_with(department_model)
-    def get(self, identifier):
+    @use_kwargs(EXPAND_ARGUMENT, location="query")
+    def get(self, identifier, expand):
         validate_id(identifier)
+        validate_expand_parameter(expand, DEPARTMENT_RESOURCE_KEY)
 
-        departments = get_dict_of_elements_from_json_file_list(
-            DEPARTMENTS_FILENAME, DEPARTMENT_ID_FIELD_KEY)
+        departments = deepcopy(get_dict_of_elements_from_json_file_list(
+            DEPARTMENTS_FILENAME, DEPARTMENT_ID_FIELD_KEY))
         department = departments.get(int(identifier))
+        apply_expand_relationships(expand, [department])
+
         if not department:
             raise NotFound("Department not found")
 
